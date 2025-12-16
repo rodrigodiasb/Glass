@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Web – Escala de Glasgow</title>
+
+<style>
+* { box-sizing: border-box; }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef2f5;
+    margin: 0;
+    padding: 12px;
+}
+header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+.card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.card h2 {
+    margin-top: 0;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 6px;
+}
+.option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+.option:last-child {
+    border-bottom: none;
+}
+.option input {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+.resultado {
+    background: #0d6efd;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+}
+.resultado h2 {
+    margin: 5px 0;
+}
+.classificacao {
+    font-size: 16px;
+    margin-top: 5px;
+}
+.botoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.btn-limpar {
+    background: #dc3545;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Escala de Coma de Glasgow</h1>
+    <small>App Web Operacional</small>
+</header>
+
+<div class="card">
+    <h2>Abertura Ocular (E)</h2>
+    <label class="option"><input type="radio" name="ocular" value="4">Espontânea (4)</label>
+    <label class="option"><input type="radio" name="ocular" value="3">Ao comando verbal (3)</label>
+    <label class="option"><input type="radio" name="ocular" value="2">À dor (2)</label>
+    <label class="option"><input type="radio" name="ocular" value="1">Nenhuma (1)</label>
+</div>
+
+<div class="card">
+    <h2>Resposta Verbal (V)</h2>
+    <label class="option"><input type="radio" name="verbal" value="5">Orientado (5)</label>
+    <label class="option"><input type="radio" name="verbal" value="4">Confuso (4)</label>
+    <label class="option"><input type="radio" name="verbal" value="3">Palavras inapropriadas (3)</label>
+    <label class="option"><input type="radio" name="verbal" value="2">Sons incompreensíveis (2)</label>
+    <label class="option"><input type="radio" name="verbal" value="1">Nenhuma (1)</label>
+</div>
+
+<div class="card">
+    <h2>Resposta Motora (M)</h2>
+    <label class="option"><input type="radio" name="motora" value="6">Obedece comandos (6)</label>
+    <label class="option"><input type="radio" name="motora" value="5">Localiza dor (5)</label>
+    <label class="option"><input type="radio" name="motora" value="4">Retirada à dor (4)</label>
+    <label class="option"><input type="radio" name="motora" value="3">Flexão anormal (3)</label>
+    <label class="option"><input type="radio" name="motora" value="2">Extensão anormal (2)</label>
+    <label class="option"><input type="radio" name="motora" value="1">Nenhuma (1)</label>
+</div>
+
+<div class="resultado">
+    <h2>Glasgow: <span id="pontuacao">0</span></h2>
+    <div class="classificacao" id="classificacao">Aguardando avaliação</div>
+    <div class="botoes">
+        <button class="btn-limpar" onclick="limpar()">Limpar</button>
+    </div>
+</div>
+
+<script>
+function calcular() {
+    let total = 0;
+    const ocular = document.querySelector('input[name="ocular"]:checked');
+    const verbal = document.querySelector('input[name="verbal"]:checked');
+    const motora = document.querySelector('input[name="motora"]:checked');
+    if (ocular) total += Number(ocular.value);
+    if (verbal) total += Number(verbal.value);
+    if (motora) total += Number(motora.value);
+    document.getElementById("pontuacao").innerText = total;
+    let classificacao = "Aguardando avaliação";
+    if (total >= 13) classificacao = "TCE Leve";
+    else if (total >= 9) classificacao = "TCE Moderado";
+    else if (total > 0) classificacao = "TCE Grave";
+    document.getElementById("classificacao").innerText = classificacao;
+}
+function limpar() {
+    document.querySelectorAll("input[type=radio]").forEach(r => r.checked = false);
+    document.getElementById("pontuacao").innerText = "0";
+    document.getElementById("classificacao").innerText = "Aguardando avaliação";
+}
+document.querySelectorAll("input[type=radio]").forEach(el => {
+    el.addEventListener("change", calcular);
+});
+</script>
+
+</body>
+</html>
