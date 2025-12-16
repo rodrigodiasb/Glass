@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escala de Coma de Glasgow</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    padding: 15px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.section {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+label:last-child {
+    border-bottom: none;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+}
+
+.result {
+    background: #0d6efd;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.classificacao {
+    margin-top: 8px;
+    font-size: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Escala de Coma de Glasgow</h2>
+
+<!-- Abertura Ocular -->
+<div class="section">
+    <strong>Abertura Ocular (E)</strong>
+    <label><input type="radio" name="ocular" value="4">Espontânea (4)</label>
+    <label><input type="radio" name="ocular" value="3">Ao comando verbal (3)</label>
+    <label><input type="radio" name="ocular" value="2">À dor (2)</label>
+    <label><input type="radio" name="ocular" value="1">Nenhuma (1)</label>
+</div>
+
+<!-- Resposta Verbal -->
+<div class="section">
+    <strong>Resposta Verbal (V)</strong>
+    <label><input type="radio" name="verbal" value="5">Orientado (5)</label>
+    <label><input type="radio" name="verbal" value="4">Confuso (4)</label>
+    <label><input type="radio" name="verbal" value="3">Palavras inapropriadas (3)</label>
+    <label><input type="radio" name="verbal" value="2">Sons incompreensíveis (2)</label>
+    <label><input type="radio" name="verbal" value="1">Nenhuma (1)</label>
+</div>
+
+<!-- Resposta Motora -->
+<div class="section">
+    <strong>Resposta Motora (M)</strong>
+    <label><input type="radio" name="motora" value="6">Obedece comandos (6)</label>
+    <label><input type="radio" name="motora" value="5">Localiza dor (5)</label>
+    <label><input type="radio" name="motora" value="4">Retirada à dor (4)</label>
+    <label><input type="radio" name="motora" value="3">Flexão anormal (3)</label>
+    <label><input type="radio" name="motora" value="2">Extensão anormal (2)</label>
+    <label><input type="radio" name="motora" value="1">Nenhuma (1)</label>
+</div>
+
+<!-- Resultado -->
+<div class="result">
+    Pontuação Glasgow: <strong id="total">0</strong>
+    <div class="classificacao" id="classificacao">Selecione as opções</div>
+</div>
+
+<script>
+function calcularGlasgow() {
+    let total = 0;
+
+    const ocular = document.querySelector('input[name="ocular"]:checked');
+    const verbal = document.querySelector('input[name="verbal"]:checked');
+    const motora = document.querySelector('input[name="motora"]:checked');
+
+    if (ocular) total += parseInt(ocular.value);
+    if (verbal) total += parseInt(verbal.value);
+    if (motora) total += parseInt(motora.value);
+
+    document.getElementById("total").innerText = total;
+
+    let classificacao = "";
+    if (total >= 13) classificacao = "Traumatismo leve";
+    else if (total >= 9) classificacao = "Traumatismo moderado";
+    else if (total > 0) classificacao = "Traumatismo grave";
+
+    document.getElementById("classificacao").innerText = classificacao;
+}
+
+// Escuta mudanças nos checklists
+document.querySelectorAll("input[type='radio']").forEach(el => {
+    el.addEventListener("change", calcularGlasgow);
+});
+</script>
+
+</body>
+</html>
